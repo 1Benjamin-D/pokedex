@@ -32,7 +32,6 @@ const PokemonFilter: React.FC<TypeFilterProps> = ({ onTypeChange }) => {
 
     return (
         <div className=' ml-16 mt-4'>
-            <h1 className=' font-bold text-4xl animate-[multicolor_5s_linear_infinite] text-center'>Pokemon List</h1>
             <label htmlFor="pokemonType" className=' mr-2 font-bold'>Type de Pokémon:</label>
             <select name="pokemonType" id="pokemonType" onChange={handleTypeChange} className='text-black text-center rounded-2xl font-semibold italic'>
                 <option value="">All</option>

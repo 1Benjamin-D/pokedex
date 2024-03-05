@@ -13,6 +13,7 @@ const Home: React.FC = () => {
 
     return (
         <main className="">
+            <h1 className=' font-bold text-4xl animate-[multicolor_5s_linear_infinite] text-center mt-5'>Pokemon List</h1>
             <PokemonFilter onTypeChange={handleTypeChange} />
             <PokemonList selectedType={selectedType} />
         </main>
