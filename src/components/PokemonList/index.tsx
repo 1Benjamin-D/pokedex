@@ -1,8 +1,8 @@
 'use client';
 
+// PokemonList.tsx
 import React, { useState, useEffect } from 'react';
 import { Pokemon, PokemonDetails } from '@/api/fetchAPI';
-import { fetchPokemonList, fetchPokemonDetails } from '@/api/fetchAPI';
 import { pokemonColors } from '@/components/PokemonColor';
 
 interface PokemonListProps {
@@ -20,17 +20,28 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const list = await fetchPokemonList();
-                setPokemonList(list);
-                const detailsPromises = list.map(pokemon => {
-                    if (!pokemonDetails[pokemon.name]) {
-                        return fetchPokemonDetails(pokemon.url);
+                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
+                if (!response.ok) {
+                    throw new Error('Error fetching data');
+                }
+                const data = await response.json();
+                setPokemonList(data.results);
+
+                const detailsPromises = data.results.map(async (pokemon: Pokemon) => {
+                    const pokemonResponse = await fetch(pokemon.url);
+                    if (!pokemonResponse.ok) {
+                        throw new Error(`Error fetching details for ${pokemon.name}`);
                     }
-                    return Promise.resolve(pokemonDetails[pokemon.name]);
+                    const pokemonData = await pokemonResponse.json();
+                    const types = pokemonData.types.map((type: any) => type.type.name).join('/');
+                    const imageUrl = pokemonData.sprites.front_default;
+                    const imageUrl2 = pokemonData.sprites.front_shiny;
+                    return { types, imageUrl, imageUrl2 };
                 });
+
                 const details = await Promise.all(detailsPromises);
                 const pokemonDetailsMap: { [key: string]: PokemonDetails } = {};
-                list.forEach((pokemon, index) => {
+                data.results.forEach((pokemon: Pokemon, index: number) => {
                     pokemonDetailsMap[pokemon.name] = details[index];
                 });
                 setPokemonDetails(pokemonDetailsMap);
@@ -80,25 +91,37 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
         return <p className=" mt-5 text-center">Chargement...</p>;
     }
 
+    if (currentPokemonList.length === 0) {
+        return <p className="mt-5 text-center">Il n'y a pas de Pokémon dans cette catégorie.</p>;
+    }
+
     return (
         <div className='text-center text-white'>
             <h1 className=' font-bold text-4xl animate-[multicolor_5s_linear_infinite]'>Pokemon List</h1>
             <ul className='flex flex-wrap justify-around'>
-                {currentPokemonList.map((pokemon, index) => (
-                    <li key={index} className='m-12 p-4 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
-                        <img
-                            src={hoveredImageUrls[pokemon.name] || pokemonDetails[pokemon.name]?.imageUrl}
-                            onMouseOver={() => handleMouseOver(pokemon.name, pokemonDetails[pokemon.name]?.imageUrl2)}
-                            onMouseLeave={() => handleMouseLeave(pokemon.name)}
-                            alt={pokemon.name}
-                        />
-                        <div className='flex flex-col'>
-                            <span className='font-bold'>{pokemon.name}</span>
-                            <span className='italic'>{pokemonDetails[pokemon.name]?.types}</span>
-                        </div>
-                    </li>
-                ))}
+                {currentPokemonList.map((pokemon, index) => {
+                    const imageUrl = pokemonDetails[pokemon.name]?.imageUrl;
+                    if (!imageUrl) {
+                        return null;
+                    }
+
+                    return (
+                        <li key={index} className='m-12 p-4 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
+                            <img
+                                src={hoveredImageUrls[pokemon.name] || imageUrl}
+                                onMouseOver={() => handleMouseOver(pokemon.name, pokemonDetails[pokemon.name]?.imageUrl2)}
+                                onMouseLeave={() => handleMouseLeave(pokemon.name)}
+                                alt={pokemon.name}
+                            />
+                            <div className='flex flex-col'>
+                                <span className='font-bold'>{pokemon.name}</span>
+                                <span className='italic'>{pokemonDetails[pokemon.name]?.types}</span>
+                            </div>
+                        </li>
+                    );
+                })}
             </ul>
+
             <div>
                 <button type="button" onClick={goToPreviousPage} disabled={currentPage === 1} className=' m-6 bg-gray-500 p-5 cursor-pointer rounded-xl hover:animate-[multicolor_5s_linear_infinite]'>Previous</button>
                 <button type="button" onClick={goToNextPage} disabled={indexOfLastItem >= filteredPokemonList.length} className=' m-6 bg-gray-500 p-5 cursor-pointer rounded-xl hover:animate-[multicolor_5s_linear_infinite]'>Next</button>

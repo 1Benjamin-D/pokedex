@@ -30,9 +30,9 @@ const PokemonFilter: React.FC<TypeFilterProps> = ({ onTypeChange }) => {
 
     return (
         <div className=' ml-16 mt-2'>
-            <label htmlFor="pokemonType">Type de Pokémon:</label>
+            <label htmlFor="pokemonType" className=' mr-2'>Type de Pokémon:</label>
             <select name="pokemonType" id="pokemonType" onChange={handleTypeChange} className='text-black text-center'>
-                <option value="">Tous</option>
+                <option value="">All</option>
                 {pokemonTypes.map(type => (
                     <option key={type} value={type}>{type}</option>
                 ))}
