@@ -97,7 +97,6 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className=' font-bold text-4xl animate-[multicolor_5s_linear_infinite]'>Pokemon List</h1>
             <ul className='flex flex-wrap justify-around'>
                 {currentPokemonList.map((pokemon, index) => {
                     const imageUrl = pokemonDetails[pokemon.name]?.imageUrl;
@@ -122,7 +121,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                 })}
             </ul>
 
-            <div>
+            <div className=''>
                 <button type="button" onClick={goToPreviousPage} disabled={currentPage === 1} className=' m-6 bg-gray-500 p-5 cursor-pointer rounded-xl hover:animate-[multicolor_5s_linear_infinite]'>Previous</button>
                 <button type="button" onClick={goToNextPage} disabled={indexOfLastItem >= filteredPokemonList.length} className=' m-6 bg-gray-500 p-5 cursor-pointer rounded-xl hover:animate-[multicolor_5s_linear_infinite]'>Next</button>
             </div>
