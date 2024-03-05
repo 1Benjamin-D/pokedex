@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pokemon, PokemonDetails } from '@/api/fetchAPI';
 import { pokemonColors } from '@/components/PokemonColor';
+import Link from 'next/link';
 
 interface PokemonListProps {
     selectedType: string | null;
@@ -97,7 +98,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
 
     return (
         <div className='text-center text-white'>
-            <ul className='flex flex-wrap justify-around'>
+            <ul className='flex flex-wrap gap-12 m-12 justify-around'>
                 {currentPokemonList.map((pokemon, index) => {
                     const imageUrl = pokemonDetails[pokemon.name]?.imageUrl;
                     if (!imageUrl) {
@@ -105,18 +106,20 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                     }
 
                     return (
-                        <li key={index} className='m-12 p-4 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
-                            <img
-                                src={hoveredImageUrls[pokemon.name] || imageUrl}
-                                onMouseOver={() => handleMouseOver(pokemon.name, pokemonDetails[pokemon.name]?.imageUrl2)}
-                                onMouseLeave={() => handleMouseLeave(pokemon.name)}
-                                alt={pokemon.name}
-                            />
-                            <div className='flex flex-col'>
-                                <span className='font-bold'>{pokemon.name}</span>
-                                <span className='italic'>{pokemonDetails[pokemon.name]?.types}</span>
-                            </div>
-                        </li>
+                        <Link href={`/Pokemon/${pokemon.name}`}>
+                            <li key={index} className='flex flex-col items-center p-8 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
+                                <img
+                                    src={hoveredImageUrls[pokemon.name] || imageUrl}
+                                    onMouseOver={() => handleMouseOver(pokemon.name, pokemonDetails[pokemon.name]?.imageUrl2)}
+                                    onMouseLeave={() => handleMouseLeave(pokemon.name)}
+                                    alt={pokemon.name}
+                                />
+                                <div className='flex flex-col'>
+                                    <span className='font-bold'>{pokemon.name}</span>
+                                    <span className='italic'>{pokemonDetails[pokemon.name]?.types}</span>
+                                </div>
+                            </li>
+                        </Link>
                     );
                 })}
             </ul>
