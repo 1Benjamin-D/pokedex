@@ -16,7 +16,6 @@ interface PokemonAbility {
 }
 
 const PokemonDetailsPage: React.FC = () => {
-    // Utilisez un état local pour stocker le nom du Pokémon
     const [pokemonName, setPokemonName] = useState<string | null>(null);
     const [pokeStats, setPokeStats] = useState<PokemonStats | null>(null);
     const [pokeAbilities, setPokeAbilities] = useState<PokemonAbility[]>([]);
@@ -25,9 +24,7 @@ const PokemonDetailsPage: React.FC = () => {
     const [pokeDesc, setPokeDesc] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
 
-    // Utilisez useEffect pour extraire le nom du Pokémon côté client
     useEffect(() => {
-        // Vérifiez si window est défini (côté client)
         if (typeof window !== 'undefined') {
             const name = window.location.pathname.split('/').pop();
             if (name) {
@@ -36,9 +33,7 @@ const PokemonDetailsPage: React.FC = () => {
         }
     }, []);
 
-    // Utilisez un autre useEffect pour effectuer les appels API et charger les données du Pokémon
     useEffect(() => {
-        // Vérifiez si le nom du Pokémon est disponible
         if (pokemonName) {
             const fetchData = async () => {
                 try {
@@ -86,7 +81,7 @@ const PokemonDetailsPage: React.FC = () => {
         }
     }, [pokemonName]);
 
-    if (!pokeStats || !pokeAbilities || !pokeType || !pokeImage || !pokeDesc || isLoading)return <Spinner />
+    if (!pokeStats || !pokeAbilities || !pokeType || !pokeImage || !pokeDesc || isLoading) return <Spinner />
 
     return (
         <div className=' border-2 flex flex-col items-center w-1/2 p-10 ml-[25%] mt-[2%] mb-[2%]' style={{ borderColor: pokemonColors[pokeType.split(',')[0].toLowerCase()] }}>

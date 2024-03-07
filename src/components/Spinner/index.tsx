@@ -1,12 +1,12 @@
 const Spinner = () => {
-    return (
-      <main className="text-center">
-        <div className="flex justify-center items-center h-screen flex-col">
-          <h2 className="text-blue-700">Loading...</h2>
-          <p>Hopefully not for too long</p>
-          <div className="loader"></div>
-        </div>
-        <style jsx>{`
+  return (
+    <main className="text-center">
+      <div className="flex justify-center items-center h-screen flex-col">
+        <h2 className="text-white">Loading...</h2>
+        <p>Hopefully not for too long</p>
+        <div className="loader"></div>
+      </div>
+      <style jsx>{`
           .loader {
             border: 4px solid rgba(255, 255, 255, 0.3); // Gris clair
             border-top: 4px solid #3498db; // Bleu
@@ -25,8 +25,8 @@ const Spinner = () => {
             }
           }
         `}</style>
-      </main>
-    );
-  };
+    </main>
+  );
+};
 
-  export default Spinner;
+export default Spinner;

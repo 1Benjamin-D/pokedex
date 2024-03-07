@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   }) {
     return (
       <main>
-        <body>{children}</body>
+        {children}
       </main>
     )
   }
