@@ -89,7 +89,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
     };
 
     if (loading) {
-        return <Spinner/>
+        return <Spinner />;
     }
 
     if (currentPokemonList.length === 0) {
@@ -105,8 +105,9 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                         return null;
                     }
 
-                        <Link href={`/pokemon/${pokemon.name}`}>
-                            <li key={index} className='flex flex-col items-center p-8 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
+                    return (
+                        <Link key={index} href={`/pokemon/${pokemon.name}`}>
+                            <li className='flex flex-col items-center p-8 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
                                 <img
                                     src={hoveredImageUrls[pokemon.name] || imageUrl}
                                     onMouseOver={() => handleMouseOver(pokemon.name, pokemonDetails[pokemon.name]?.imageUrl2)}
@@ -121,6 +122,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                                 </div>
                             </li>
                         </Link>
+                    );
                 })}
             </ul>
 
