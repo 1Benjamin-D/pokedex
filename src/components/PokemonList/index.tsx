@@ -1,10 +1,10 @@
 'use client';
 
-// PokemonList.tsx
 import React, { useState, useEffect } from 'react';
 import { Pokemon, PokemonDetails } from '@/api/fetchAPI';
 import { pokemonColors } from '@/components/PokemonColor';
 import Link from 'next/link';
+import Spinner from '../Spinner';
 
 interface PokemonListProps {
     selectedType: string | null;
@@ -16,7 +16,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 12;
-
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -35,8 +35,8 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                     }
                     const pokemonData = await pokemonResponse.json();
                     const types = pokemonData.types.map((type: any) => type.type.name).join('/');
-                    const imageUrl = pokemonData.sprites.front_default;
-                    const imageUrl2 = pokemonData.sprites.front_shiny;
+                    const imageUrl = pokemonData.sprites.other["official-artwork"].front_default;
+                    const imageUrl2 = pokemonData.sprites.other["official-artwork"].front_shiny;
                     return { types, imageUrl, imageUrl2 };
                 });
 
@@ -89,7 +89,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
     };
 
     if (loading) {
-        return <p className=" mt-5 text-center">Chargement...</p>;
+        return <Spinner/>
     }
 
     if (currentPokemonList.length === 0) {
@@ -106,13 +106,15 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                     }
 
                     return (
-                        <Link href={`/Pokemon/${pokemon.name}`}>
+                        <Link href={`/pokemon/${pokemon.name}`}>
                             <li key={index} className='flex flex-col items-center p-8 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
                                 <img
                                     src={hoveredImageUrls[pokemon.name] || imageUrl}
                                     onMouseOver={() => handleMouseOver(pokemon.name, pokemonDetails[pokemon.name]?.imageUrl2)}
                                     onMouseLeave={() => handleMouseLeave(pokemon.name)}
                                     alt={pokemon.name}
+                                    height="100px"
+                                    width="100px"
                                 />
                                 <div className='flex flex-col'>
                                     <span className='font-bold'>{pokemon.name}</span>
