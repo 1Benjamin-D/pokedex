@@ -93,7 +93,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
     }
 
     if (currentPokemonList.length === 0) {
-        return <p className="mt-5 text-center">Il n'y a pas de Pokémon dans cette catégorie.</p>;
+        return <p className="mt-5 text-center">Il n&apos;y a pas de Pokémon dans cette catégorie.</p>;
     }
 
     return (
@@ -105,7 +105,6 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                         return null;
                     }
 
-                    return (
                         <Link href={`/pokemon/${pokemon.name}`}>
                             <li key={index} className='flex flex-col items-center p-8 border-4 border-white rounded-xl hover:scale-150' style={{ backgroundColor: pokemonColors[pokemonDetails[pokemon.name]?.types.split('/')[0].toLowerCase()] }}>
                                 <img
@@ -122,7 +121,6 @@ const PokemonList: React.FC<PokemonListProps> = ({ selectedType }) => {
                                 </div>
                             </li>
                         </Link>
-                    );
                 })}
             </ul>
 
