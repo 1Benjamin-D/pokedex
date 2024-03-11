@@ -107,6 +107,7 @@ const PokemonDetailsPage: React.FC = () => {
                 <p>Defense: {pokeStats.defense}</p>
                 <p>Evasion: {pokeStats.evasion}</p>
             </div>
+            <a href="../../" className=' mt-5 border-2 p-2 hover:text-red-500 hover:border-red-500'>Back to the pokedex</a>
         </div>
     );
 };
